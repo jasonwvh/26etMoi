@@ -1,4 +1,4 @@
-# TextDNA
+# 26 et Moi
 
 ## Predict where you're from based on how similar your text is to others
 
