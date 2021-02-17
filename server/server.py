@@ -1,23 +1,16 @@
-import json
-import random
-import flask
-from flask import Response, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS, cross_origin
-from sklearn.base import BaseEstimator, TransformerMixin
-import numpy as np  # linear algebra
-import pandas as pd  # data processing, CSV file I/O (e.g. pd.read_csv)
+import numpy as np
+import pandas as pd
 import pickle
 import json
+import random
 import re
+import nltk
+import flask
+from flask import Response, request
+from flask_cors import CORS
 from sklearn.base import BaseEstimator, TransformerMixin
 from nltk.corpus import stopwords
-import nltk
 from os import path
-
-app = flask.Flask(__name__)
-CORS(app)
-app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 def processing(df):
@@ -94,41 +87,9 @@ def predict(sub):
     return preds
 
 
-'''
-# placeholder
-text_data = [
-    {'id': 'id00011',
-     'text': "hello flask!",
-     'country': 'MY'},
-    {'id': 'id00012',
-     'text': "hello world it is me!",
-     'country': 'US'},
-    {'id': 'id00013',
-     'text': "hello react world!",
-     'country': 'DE'},
-    {'id': 'id00014',
-     'text': "happy new year!",
-     'country': 'IN'},
-]
-# placeholder
-dna_data = {
-    'id': '00001',
-    'country': [
-        {'name': 'US',
-         'value': 0.2,
-         },
-        {'name': 'MY',
-         'value': 0.2,
-         },
-        {'name': 'IN',
-         'value': 0.3,
-         },
-        {'name': 'DE',
-         'value': 0.3,
-         },
-    ]
-}
-'''
+app = flask.Flask(__name__)
+CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 
 @app.route('/')

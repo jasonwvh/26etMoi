@@ -141,6 +141,7 @@ function App() {
             </div>
             {DNAData && (
                 <div className="charts-wrapper">
+                    <h3>Your Text DNA</h3>
                     <ResponsiveContainer>
                         <PieChart>
                             <Tooltip
