@@ -10,11 +10,11 @@
   overflow-x: hidden;
   height: 100vh;
   width: 60vw;
-  align-items: center;
   margin: 0 auto;
-  padding-bottom: 10%;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  padding-bottom: 10%;
 }
 
 @media (max-width: 800px) {
@@ -23,10 +23,6 @@
     padding-top: 10%;
     flex-direction: column;
   }
-}
-
-.form {
-  transition: 2s;
 }
 
 .charts-wrapper {
