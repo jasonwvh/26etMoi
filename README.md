@@ -1,10 +1,10 @@
 # TextDNA
 
-## predicts where you're from based on how similar your text is to others
+## Predict where you're from based on how similar your text is to others
 
 ![screenshot](screenshot.PNG)
 
-### as more people input their country and text, the model grows better
+The model changes as more people submit their entries
 
 # Reference
 
