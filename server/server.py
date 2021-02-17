@@ -94,6 +94,7 @@ def predict(sub):
     return preds
 
 
+'''
 # placeholder
 text_data = [
     {'id': 'id00011',
@@ -127,16 +128,12 @@ dna_data = {
          },
     ]
 }
+'''
 
 
 @app.route('/')
 def home():
     return "<h1>Hello Flask!</h1>"
-
-
-@app.route('/api/get/all', methods=['GET'])
-def api_all():
-    return jsonify(text_data)
 
 
 @app.route('/api/post', methods=['POST'])

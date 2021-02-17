@@ -1,10 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Button, Form } from "react-bootstrap";
-import { Cell, ResponsiveContainer, Pie, PieChart, Legend } from "recharts";
+import {
+    Tooltip,
+    Cell,
+    ResponsiveContainer,
+    Pie,
+    PieChart,
+    Legend,
+} from "recharts";
+import logo from "./logo.png";
 import "./App.css";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = [
+    "#003f5c",
+    "#444e86",
+    "#955196",
+    "#dd5182",
+    "#ff6e54",
+    "#ffa600",
+];
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
     cx,
@@ -20,6 +35,7 @@ const renderCustomizedLabel = ({
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
     return (
         <text
+            fontSize={20}
             x={x}
             y={y}
             fill={COLORS[index % COLORS.length]}
@@ -31,27 +47,33 @@ const renderCustomizedLabel = ({
     );
 };
 const apiURL = "http://localhost:5000";
-const getData = (async) => {
-    axios.get(`${apiURL}/api/get/all`).then((res) => {
-        const data = res.data;
-        //console.log(data);
-    });
-};
 
 function App() {
-    const [DNAData, setDNAData] = useState([
-        { name: "US", value: 0.2 },
-        { name: "MY", value: 0.2 },
-        { name: "IN", value: 0.5 },
-        { name: "DE", value: 0.1 },
-    ]);
+    const [DNAData, setDNAData] = useState();
+    const [country, setCountry] = useState("USA");
+    const [text, setText] = useState("Here is a sample text");
+    const [countryValid, setCountryValid] = useState(true);
+    const [textValid, setTextValid] = useState(true);
 
-    const [country, setCountry] = useState("US");
-    const [text, setText] = useState("Test");
+    const checkCountryValid = (event) => {
+        const form = event.currentTarget;
 
-    useEffect(() => {
-        getData();
-    }, []);
+        if (form.value.length === 3) {
+            setCountryValid(true);
+        } else {
+            setCountryValid(false);
+        }
+    };
+
+    const checkTextValid = (event) => {
+        const form = event.currentTarget;
+
+        if (form.value.length > 0) {
+            setTextValid(true);
+        } else {
+            setTextValid(false);
+        }
+    };
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -74,56 +96,88 @@ function App() {
 
     return (
         <div className="App">
-            <Form onSubmit={onSubmit}>
-                <Form.Group controlId="form.country">
-                    <Form.Label>Where are you from?</Form.Label>
-                    <Form.Control
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                        as="select"
-                    >
-                        <option>MY</option>
-                        <option>US</option>
-                        <option>DE</option>
-                        <option>IN</option>
-                    </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="form.text">
-                    <Form.Label>Enter text here</Form.Label>
-                    <Form.Control
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        as="textarea"
-                        rows={3}
-                    />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Submit
-                </Button>
-            </Form>
-
-            <ResponsiveContainer height={250}>
-                <PieChart height={250}>
-                    <Legend verticalAlign="top" />
-                    <Pie
-                        data={DNAData}
-                        labelLine={false}
-                        label={renderCustomizedLabel}
-                        innerRadius={60}
-                        outerRadius={80}
-                        paddingAngle={5}
-                        fill="#8884d8"
-                        dataKey="value"
-                    >
-                        {DNAData.map((entry, index) => (
-                            <Cell
-                                key={`cell-${index}`}
-                                fill={COLORS[index % COLORS.length]}
+            <div className="form">
+                <img src={logo} alt="logo" />
+                <Form onSubmit={onSubmit}>
+                    <Form.Group controlId="form-country">
+                        <Form.Label>
+                            Where are you from? (i.e. USA, CAN)
+                        </Form.Label>
+                        <Form.Control
+                            isInvalid={!countryValid}
+                            type="text"
+                            value={country}
+                            onChange={(e) => {
+                                checkCountryValid(e);
+                                setCountry(e.target.value);
+                            }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            Please enter 3-letter ISO code.
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <Form.Group controlId="form-text">
+                        <Form.Label>Enter text here</Form.Label>
+                        <Form.Control
+                            isInvalid={!textValid}
+                            value={text}
+                            onChange={(e) => {
+                                checkTextValid(e);
+                                setText(e.target.value);
+                            }}
+                            as="textarea"
+                            rows={5}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                            Please input something
+                        </Form.Control.Feedback>
+                    </Form.Group>
+                    <div style={{ textAlign: "center" }}>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    </div>
+                </Form>
+            </div>
+            {DNAData && (
+                <div className="charts-wrapper">
+                    <ResponsiveContainer>
+                        <PieChart>
+                            <Tooltip
+                                cursor={{ stroke: "red", strokeWidth: 2 }}
                             />
-                        ))}
-                    </Pie>
-                </PieChart>
-            </ResponsiveContainer>
+                            <Legend
+                                iconSize={15}
+                                iconType="rect"
+                                verticalAlign="bottom"
+                                wrapperStyle={{
+                                    paddingTop: "20px",
+                                    text: "#FFFFFF",
+                                }}
+                                textAnchor
+                            />
+                            <Pie
+                                data={DNAData}
+                                labelLine={true}
+                                label={renderCustomizedLabel}
+                                innerRadius={130}
+                                outerRadius={160}
+                                paddingAngle={2}
+                                dataKey="value"
+                            >
+                                {DNAData.map((entry, index) => (
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={COLORS[index % COLORS.length]}
+                                    />
+                                ))}
+                            </Pie>
+                        </PieChart>
+                    </ResponsiveContainer>
+                    <br />
+                    <h6>*Checked against every records in our database</h6>
+                </div>
+            )}
         </div>
     );
 }

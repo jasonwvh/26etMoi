@@ -1,8 +1,42 @@
-.App {
+* {
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Verdana', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.App {
+  overflow-x: hidden;
+  height: 100vh;
+  width: 60vw;
   align-items: center;
-  justify-content: space-between;
-  text-align: 'center';
+  margin: 0 auto;
+  padding-bottom: 10%;
+  display: flex;
+  flex-direction: row;
+}
+
+@media (max-width: 800px) {
+  .App {
+    width: 95vw;
+    padding-top: 10%;
+    flex-direction: column;
+  }
+}
+
+.form {
+  transition: 2s;
+}
+
+.charts-wrapper {
+  text-align: center;
+  padding-top: 10%;
+  width: 50%;
+  height: 75%;
+}
+
+@media (max-width: 800px) {
+  .charts-wrapper {
+    width: 95%;
+  }
 }
